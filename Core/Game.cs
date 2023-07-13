@@ -1,24 +1,37 @@
 namespace EndGame;
+using Helper;
 
 public class Game
 {
-    RoundManager RoundManager { get; set; }
-    Party Heroes { get; set; }
-    Party Monsters { get; set; }
+    internal RoundManager RoundManager { get; set; }
+    BattleSystem BattleSystem { get; set; }
+    internal HumanParty Heroes { get; set; }
+    internal IParty Monsters { get; set; }
 
-    public Game()
+    internal Game()
     {
-        Monsters = new(new List<Character> { new Monster(), new Monster(), new Monster(), new Monster() });
-        Heroes = new(new List<Character> { new Hero("A", 25), new Hero("B", 25), new Hero("C", 25) });
+        Monsters = new AIParty(new List<Character> { new Skeleton(), new Skeleton(), new Skeleton() });
+        Character hero1 = CreateNewCharacter();
 
+        Heroes = new(new List<Character> { hero1 });
         RoundManager = new(Heroes, Monsters);
+        BattleSystem = new(this);
     }
-    public void Init()
+
+    internal Character CreateNewCharacter()
+    {
+        string name = Helper.AskForString("What is your name? ", 2, 16);
+        return new Hero(name);
+    }
+
+    internal void Init()
     {
         while (true)
         {
-            RoundManager.CurrentCharacter.GetAction();
+            RoundManager.DisplayCurrentCharacter();
+            BattleSystem.HandleAction(RoundManager.CurrentParty.GetAction());
             RoundManager.GetNextRound();
+
         }
     }
 }

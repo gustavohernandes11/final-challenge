@@ -2,6 +2,3 @@
 
 Game game = new();
 game.Init();
-
-
-
