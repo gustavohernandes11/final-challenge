@@ -2,11 +2,19 @@ namespace EndGame;
 
 internal class Skeleton : Character
 {
-    public Skeleton(
+    internal override Attack Attack
+    {
+        get
+        {
+            Random rnd = new();
+            return new Attack("BONE CRUNCH", rnd.Next(2));
+        }
+    }
+
+    internal Skeleton(
         string name = "SKELETON",
-        string attackName = "BONE CRUNCH",
         int health = 5)
-            : base(name, attackName, health) { }
+            : base(name, health) { }
 
 }
 

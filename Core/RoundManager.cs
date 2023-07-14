@@ -2,42 +2,60 @@ namespace EndGame;
 
 internal class RoundManager
 {
-    internal int Round { get; set; } = 1;
+    internal int Round { get; set; } = 0;
     internal Character CurrentCharacter { get; private set; }
     internal IParty CurrentParty { get; private set; }
+    internal int Serie { get; set; }
 
     int HeroesIndex { get; set; } = 0;
     int MonstersIndex { get; set; } = 0;
 
     IParty Heroes { get; set; }
-    IParty Monsters { get; set; }
+    IParty[] Monsters { get; set; }
 
-    internal RoundManager(IParty heroes, IParty monsters)
+    internal RoundManager(IParty heroes, IParty[] monsters)
     {
         Heroes = heroes;
         Monsters = monsters;
 
         CurrentParty = Heroes;
-        CurrentCharacter = Heroes.Characters[0];
+        CurrentCharacter = GetNextRound();
     }
 
     void ToggleParty() =>
-        CurrentParty = CurrentParty == Heroes ? Monsters : Heroes;
+        CurrentParty = CurrentParty == Heroes ? Monsters[Serie] : Heroes;
 
     internal IParty GetEnemyParty() =>
-        CurrentParty == Heroes ? Monsters : Heroes;
+        CurrentParty == Heroes ? Monsters[Serie] : Heroes;
 
-    void IncrementRound()
+    private void IncrementRound()
     {
         Round += 1;
         ToggleParty();
+        if (Monsters.Length <= 0) Serie++;
+    }
+
+    private void VerifyAndIncrementSerie()
+    {
+        if (!Monsters[Serie].Characters.Any() && ThereIsMoreSeries())
+            Serie++;
+
+    }
+
+    internal bool ThereIsMoreSeries()
+    {
+        if (GetEnemyParty().Player == Player.TheTrueProgrammer) return false;
+        else if (Serie >= Monsters.Length - 1) return false;
+        else return true;
+
     }
 
     internal Character GetNextRound()
     {
         Character nextCharacter;
+        VerifyAndIncrementSerie();
 
-        if (Round % 2 == 0)
+        if (Round % 2 == 1)
         {
             if (HeroesIndex < Heroes.Characters.Count)
                 nextCharacter = Heroes.Characters[HeroesIndex];
@@ -51,13 +69,13 @@ internal class RoundManager
         }
         else
         {
-            if (MonstersIndex < Monsters.Characters.Count)
-                nextCharacter = Monsters.Characters[MonstersIndex];
+            if (MonstersIndex < Monsters[Serie].Characters.Count)
+                nextCharacter = Monsters[Serie].Characters[MonstersIndex];
 
             else
             {
                 MonstersIndex = 0;
-                nextCharacter = Monsters.Characters[MonstersIndex];
+                nextCharacter = Monsters[Serie].Characters[MonstersIndex];
             }
             MonstersIndex++;
         }

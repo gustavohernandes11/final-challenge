@@ -5,17 +5,20 @@ using System.Collections.Generic;
 
 internal interface IParty
 {
+    public Player Player { get; }
     public List<Character> Characters { get; set; }
     public Action GetAction();
 }
 
 internal class AIParty : IParty
 {
+    public Player Player { get; }
     public List<Character> Characters { get; set; }
 
-    internal AIParty(List<Character> characters)
+    internal AIParty(List<Character> characters, Player player)
     {
         Characters = characters;
+        Player = player;
     }
 
     public Action GetAction()
@@ -27,11 +30,14 @@ internal class AIParty : IParty
 
 internal class HumanParty : IParty
 {
+    public Player Player { get; }
     public List<Character> Characters { get; set; }
 
-    public HumanParty(List<Character> characters)
+    public HumanParty(List<Character> characters, Player player)
     {
         Characters = characters;
+        Player = player;
+
     }
 
     public Action GetAction()
@@ -58,4 +64,10 @@ internal enum Action
 {
     Skip,
     Attack
+}
+
+internal enum Player
+{
+    TheTrueProgrammer,
+    TheUncodedOneArmy,
 }

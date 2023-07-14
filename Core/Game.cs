@@ -5,15 +5,23 @@ public class Game
 {
     internal RoundManager RoundManager { get; set; }
     BattleSystem BattleSystem { get; set; }
-    internal HumanParty Heroes { get; set; }
-    internal IParty Monsters { get; set; }
+    internal IParty Heroes { get; set; }
+    internal IParty[] Monsters { get; set; }
+    internal bool ShouldGameContinue { get; set; } = true;
 
     internal Game()
     {
-        Monsters = new AIParty(new List<Character> { new Skeleton(), new Skeleton(), new Skeleton() });
-        Character hero1 = CreateNewCharacter();
+        Monsters = new IParty[]
+            {
+                new AIParty(new List<Character> { new Skeleton() }, Player.TheUncodedOneArmy),
+                new AIParty(new List<Character> { new Skeleton(), new Skeleton() }, Player.TheUncodedOneArmy),
+                new AIParty(new List<Character> { new TheUncodedOne() }, Player.TheUncodedOneArmy)
+            };
 
-        Heroes = new(new List<Character> { hero1 });
+        Heroes = new HumanParty(
+            new List<Character> { CreateNewCharacter() },
+            Player.TheTrueProgrammer);
+
         RoundManager = new(Heroes, Monsters);
         BattleSystem = new(this);
     }
@@ -26,12 +34,12 @@ public class Game
 
     internal void Init()
     {
-        while (true)
+        while (ShouldGameContinue)
         {
+            RoundManager.GetNextRound();
             RoundManager.DisplayCurrentCharacter();
             BattleSystem.HandleAction(RoundManager.CurrentParty.GetAction());
-            RoundManager.GetNextRound();
-
+            BattleSystem.Verify();
         }
     }
 }
