@@ -1,4 +1,6 @@
 ﻿using EndGame;
 
-Game game = new();
+
+Game game = new(GameGenerator.GetGameTeams());
 game.Init();
+

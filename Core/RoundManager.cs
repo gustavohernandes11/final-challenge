@@ -1,11 +1,14 @@
+using System.Text;
+
 namespace EndGame;
 
 internal class RoundManager
 {
-    internal int Round { get; set; } = 0;
+    internal int Round { get; private set; } = 0;
     internal Character CurrentCharacter { get; private set; }
     internal IParty CurrentParty { get; private set; }
-    internal int Serie { get; set; }
+    internal IParty CurrentAdversaryParty { get; private set; }
+    internal int Serie { get; private set; }
 
     int HeroesIndex { get; set; } = 0;
     int MonstersIndex { get; set; } = 0;
@@ -19,14 +22,15 @@ internal class RoundManager
         Monsters = monsters;
 
         CurrentParty = Heroes;
+        CurrentAdversaryParty = Monsters[Serie];
         CurrentCharacter = GetNextRound();
     }
 
-    void ToggleParty() =>
+    void ToggleParty()
+    {
         CurrentParty = CurrentParty == Heroes ? Monsters[Serie] : Heroes;
-
-    internal IParty GetEnemyParty() =>
-        CurrentParty == Heroes ? Monsters[Serie] : Heroes;
+        CurrentAdversaryParty = CurrentParty == Monsters[Serie] ? Heroes : Monsters[Serie];
+    }
 
     private void IncrementRound()
     {
@@ -37,17 +41,15 @@ internal class RoundManager
 
     private void VerifyAndIncrementSerie()
     {
-        if (!Monsters[Serie].Characters.Any() && ThereIsMoreSeries())
+        if (!Monsters[Serie].Characters.Any() && IsThereMoreSeries())
             Serie++;
-
     }
 
-    internal bool ThereIsMoreSeries()
+    internal bool IsThereMoreSeries()
     {
-        if (GetEnemyParty().Player == Player.TheTrueProgrammer) return false;
+        if (CurrentAdversaryParty.Player == Player.TheTrueProgrammer) return false;
         else if (Serie >= Monsters.Length - 1) return false;
         else return true;
-
     }
 
     internal Character GetNextRound()
@@ -89,5 +91,14 @@ internal class RoundManager
     {
         Console.WriteLine();
         Console.WriteLine($"It is {CurrentCharacter.Name}'s turn!");
+    }
+
+    internal void DisplayGameStatus()
+    {
+        Console.WriteLine($"========================================= BATTLE ({Serie + 1} / {Monsters.Length}) ========================================");
+        Console.WriteLine($"{Heroes.GetPartyStatus(CurrentCharacter)}");
+        Console.WriteLine("------------------------------------------------VS------------------------------------------------");
+        Console.WriteLine($"{Monsters[Serie].GetPartyStatus(CurrentCharacter)}");
+        Console.WriteLine("=================================================================================================");
     }
 }

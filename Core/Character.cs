@@ -28,8 +28,8 @@ internal abstract class Character
         Health = maxHealth;
     }
 
-    internal void DisplayHealth() =>
-        Console.WriteLine($"{Name} is now at {Health}/{MaxHealth} HP.");
+    internal string GetCharacterStatus() =>
+        $"{Name} ( {Health} / {MaxHealth} )";
 
 }
 

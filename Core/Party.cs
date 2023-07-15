@@ -2,12 +2,14 @@ namespace EndGame;
 
 using Helper;
 using System.Collections.Generic;
+using System.Text;
 
 internal interface IParty
 {
     public Player Player { get; }
     public List<Character> Characters { get; set; }
     public Action GetAction();
+    public string GetPartyStatus(Character current);
 }
 
 internal class AIParty : IParty
@@ -19,6 +21,26 @@ internal class AIParty : IParty
     {
         Characters = characters;
         Player = player;
+    }
+
+    // to refact
+    public string GetPartyStatus(Character current)
+    {
+        StringBuilder builder = new();
+        foreach (var character in Characters)
+        {
+            if (character == current)
+            {
+                builder.Append("*");
+                builder.Append(character.GetCharacterStatus());
+            }
+            else
+            {
+                builder.Append(character.GetCharacterStatus());
+            }
+            builder.Append(" ");
+        }
+        return builder.ToString();
     }
 
     public Action GetAction()
@@ -37,7 +59,6 @@ internal class HumanParty : IParty
     {
         Characters = characters;
         Player = player;
-
     }
 
     public Action GetAction()
@@ -58,13 +79,27 @@ internal class HumanParty : IParty
             }
         }
     }
+
+    public string GetPartyStatus(Character current)
+    {
+        StringBuilder builder = new();
+        foreach (var character in Characters)
+        {
+            if (character == current)
+            {
+                builder.Append("*");
+                builder.Append(character.GetCharacterStatus());
+            }
+            else
+            {
+                builder.Append(character.GetCharacterStatus());
+            }
+            builder.Append(" ");
+        }
+        return builder.ToString();
+    }
 }
 
-internal enum Action
-{
-    Skip,
-    Attack
-}
 
 internal enum Player
 {
