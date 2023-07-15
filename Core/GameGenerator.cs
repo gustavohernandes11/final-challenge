@@ -1,10 +1,10 @@
 using EndGame;
-using Helper;
+using Util;
 
 internal interface IGameTeams
 {
-    IParty[] Monsters { get; }
-    IParty Heroes { get; }
+    Party[] Monsters { get; }
+    Party Heroes { get; }
 }
 
 public class GameGenerator
@@ -13,44 +13,42 @@ public class GameGenerator
     {
         while (true)
         {
-            Console.WriteLine("[1] Human vs Human [2] Human vs Computer [3] Computer vs Computer");
-            string? input = Console.ReadLine();
+            string input = Helper.AskForString("[1] Human vs Human [2] Human vs Computer [3] Computer vs Computer");
 
-            if (input == null) continue;
             switch (input.Trim().ToLower())
             {
                 case "1":
-                    return new GameOptions(
-                        new IParty[]
-                        {
-                            new HumanParty(new List<Character> { new Skeleton() }, Player.TheUncodedOneArmy),
-                            new HumanParty(new List<Character> { new Skeleton(), new Skeleton() }, Player.TheUncodedOneArmy),
-                            new HumanParty(new List<Character> { new TheUncodedOne() }, Player.TheUncodedOneArmy)
-                        },
-                        new HumanParty(new List<Character> { Game.CreateNewCharacter() }, Player.TheTrueProgrammer)
-                    );
+                    Party[] humanMonsters = new Party[]
+                    {
+                        new HumanParty(new List<Character> { new Skeleton() }, Player.TheUncodedOneArmy, new List<Item> { Item.Dagger, Item.HealthPotion }),
+                        new HumanParty(new List<Character> { new Skeleton(), new Skeleton() }, Player.TheUncodedOneArmy, new List<Item> { Item.Dagger, Item.HealthPotion }),
+                        new HumanParty(new List<Character> { new TheUncodedOne() }, Player.TheUncodedOneArmy, new List<Item> { Item.Dagger, Item.HealthPotion })
+                    };
+                    Party humanHeroes = new HumanParty(new List<Character> { Game.CreateNewCharacter() }, Player.TheTrueProgrammer, new List<Item> { Item.Sword, Item.HealthPotion });
+
+                    return new GameOptions(humanMonsters, humanHeroes);
 
                 case "2":
-                    return new GameOptions(
-                        new IParty[]
-                        {
-                            new AIParty(new List<Character> { new Skeleton() }, Player.TheUncodedOneArmy),
-                            new AIParty(new List<Character> { new Skeleton(), new Skeleton() }, Player.TheUncodedOneArmy),
-                            new AIParty(new List<Character> { new TheUncodedOne() }, Player.TheUncodedOneArmy)
-                        },
-                        new HumanParty(new List<Character> { Game.CreateNewCharacter() }, Player.TheTrueProgrammer)
-                    );
+                    Party[] computerMonsters = new Party[]
+                    {
+                        new ComputerParty(new List<Character> { new Skeleton() }, Player.TheUncodedOneArmy, new List<Item> { Item.Dagger, Item.Dagger }),
+                        new ComputerParty(new List<Character> { new Skeleton(), new Skeleton() }, Player.TheUncodedOneArmy, new List<Item> { Item.Dagger, Item.HealthPotion }),
+                        new ComputerParty(new List<Character> { new TheUncodedOne() }, Player.TheUncodedOneArmy, new List<Item> { Item.Dagger, Item.HealthPotion })
+                    };
+                    Party computerHeroes = new HumanParty(new List<Character> { Game.CreateNewCharacter() }, Player.TheTrueProgrammer, new List<Item> { Item.Sword, Item.HealthPotion });
+
+                    return new GameOptions(computerMonsters, computerHeroes);
 
                 case "3":
-                    return new GameOptions(
-                        new IParty[]
-                        {
-                            new AIParty(new List<Character> { new Skeleton() }, Player.TheUncodedOneArmy),
-                            new AIParty(new List<Character> { new Skeleton(), new Skeleton() }, Player.TheUncodedOneArmy),
-                            new AIParty(new List<Character> { new TheUncodedOne() }, Player.TheUncodedOneArmy)
-                        },
-                        new AIParty(new List<Character> { Game.CreateNewCharacter() }, Player.TheTrueProgrammer)
-                    );
+                    Party[] computerVsComputerMonsters = new Party[]
+                    {
+                        new ComputerParty(new List<Character> { new Skeleton() }, Player.TheUncodedOneArmy, new List<Item> { Item.Dagger, Item.HealthPotion }),
+                        new ComputerParty(new List<Character> { new Skeleton(), new Skeleton() }, Player.TheUncodedOneArmy, new List<Item> { Item.Dagger, Item.HealthPotion }),
+                        new ComputerParty(new List<Character> { new TheUncodedOne() }, Player.TheUncodedOneArmy, new List<Item> { Item.Dagger, Item.HealthPotion })
+                    };
+                    Party computerVsComputerHeroes = new ComputerParty(new List<Character> { Game.CreateNewCharacter() }, Player.TheTrueProgrammer, new List<Item> { Item.Sword, Item.HealthPotion });
+
+                    return new GameOptions(computerVsComputerMonsters, computerVsComputerHeroes);
 
                 default:
                     continue;
@@ -61,10 +59,10 @@ public class GameGenerator
 
 internal class GameOptions : IGameTeams
 {
-    public IParty[] Monsters { get; }
-    public IParty Heroes { get; }
+    public Party[] Monsters { get; }
+    public Party Heroes { get; }
 
-    public GameOptions(IParty[] monsters, IParty heroes)
+    public GameOptions(Party[] monsters, Party heroes)
     {
         Monsters = monsters;
         Heroes = heroes;

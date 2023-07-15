@@ -11,7 +11,7 @@ internal class GameVerifier
 
     internal void Verify()
     {
-        IParty adversaryParty = Game.RoundManager.CurrentAdversaryParty;
+        Party adversaryParty = Game.RoundManager.CurrentAdversaryParty;
 
         if (Game.HasDead(adversaryParty))
         {

@@ -1,6 +1,5 @@
 using System.Text.RegularExpressions;
-
-namespace Helper;
+namespace Util;
 
 public class Helper
 {

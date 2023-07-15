@@ -1,12 +1,12 @@
 namespace EndGame;
-using Helper;
+using Util;
 
 public class Game
 {
     internal RoundManager RoundManager { get; set; }
     internal GameVerifier GameVerifier { get; set; }
-    internal IParty Heroes { get; set; }
-    internal IParty[] Monsters { get; set; }
+    internal Party Heroes { get; set; }
+    internal Party[] Monsters { get; set; }
     internal bool ShouldGameContinue { get; set; } = true;
 
     internal Game(IGameTeams teams)
@@ -29,9 +29,11 @@ public class Game
         while (ShouldGameContinue)
         {
             RoundManager.GetNextRound();
-            RoundManager.DisplayGameStatus();
+            DisplayGameStatus();
             RoundManager.DisplayCurrentCharacter();
-            HandleAction(RoundManager.CurrentParty.GetAction());
+            Action action = RoundManager.CurrentParty.GetAction(RoundManager.CurrentCharacter);
+            HandleAction(action);
+
             GameVerifier.Verify();
         }
     }
@@ -47,25 +49,49 @@ public class Game
             case Action.Attack:
                 command = new AttackCommand();
                 break;
+            case Action.AttackWithDagger:
+                command = new AttackWithDaggerCommand();
+                break;
+            case Action.AttackWithSword:
+                command = new AttackWithSwordCommand();
+                break;
+            case Action.EquipDagger:
+                command = new EquipDaggerCommand();
+                break;
+            case Action.EquipSword:
+                command = new EquipSwordCommand();
+                break;
+            case Action.UseHealthPotion:
+                command = new UseHealthPotionCommand();
+                break;
             default:
                 break;
         }
         command?.Run(this);
 
     }
-    internal bool HasAlive(IParty party) =>
+    internal bool HasAlive(Party party) =>
         party.Characters
             .Any(character => character.Health > 0);
 
-    internal bool HasDead(IParty party) =>
+    internal bool HasDead(Party party) =>
         party.Characters
             .Any(character => character.Health <= 0);
 
-    internal IEnumerable<Character> GetDead(IParty party) =>
+    internal IEnumerable<Character> GetDead(Party party) =>
         party.Characters
             .Select(character => character)
             .Where(character => character.Health <= 0);
 
     internal Character ChooseTarget() =>
         RoundManager.CurrentAdversaryParty.Characters[0];
+
+    internal void DisplayGameStatus()
+    {
+        Console.WriteLine($"========================================= BATTLE ({RoundManager.Serie + 1} / {Monsters.Length}) ========================================");
+        Console.WriteLine($"{Heroes.GetPartyStatus(RoundManager.CurrentCharacter)}");
+        Console.WriteLine("------------------------------------------------VS------------------------------------------------");
+        Console.WriteLine($"{Monsters[RoundManager.Serie].GetPartyStatus(RoundManager.CurrentCharacter)}");
+        Console.WriteLine("=================================================================================================");
+    }
 }

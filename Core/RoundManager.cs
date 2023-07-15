@@ -6,17 +6,17 @@ internal class RoundManager
 {
     internal int Round { get; private set; } = 0;
     internal Character CurrentCharacter { get; private set; }
-    internal IParty CurrentParty { get; private set; }
-    internal IParty CurrentAdversaryParty { get; private set; }
+    internal Party CurrentParty { get; private set; }
+    internal Party CurrentAdversaryParty { get; private set; }
     internal int Serie { get; private set; }
 
     int HeroesIndex { get; set; } = 0;
     int MonstersIndex { get; set; } = 0;
 
-    IParty Heroes { get; set; }
-    IParty[] Monsters { get; set; }
+    Party Heroes { get; set; }
+    Party[] Monsters { get; set; }
 
-    internal RoundManager(IParty heroes, IParty[] monsters)
+    internal RoundManager(Party heroes, Party[] monsters)
     {
         Heroes = heroes;
         Monsters = monsters;
@@ -91,14 +91,5 @@ internal class RoundManager
     {
         Console.WriteLine();
         Console.WriteLine($"It is {CurrentCharacter.Name}'s turn!");
-    }
-
-    internal void DisplayGameStatus()
-    {
-        Console.WriteLine($"========================================= BATTLE ({Serie + 1} / {Monsters.Length}) ========================================");
-        Console.WriteLine($"{Heroes.GetPartyStatus(CurrentCharacter)}");
-        Console.WriteLine("------------------------------------------------VS------------------------------------------------");
-        Console.WriteLine($"{Monsters[Serie].GetPartyStatus(CurrentCharacter)}");
-        Console.WriteLine("=================================================================================================");
     }
 }

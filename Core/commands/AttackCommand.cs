@@ -1,15 +1,5 @@
 using EndGame;
 
-public interface ICommand
-{
-    void Run(Game game);
-}
-
-public class SkipCommand : ICommand
-{
-    public void Run(Game game) =>
-        Console.WriteLine($"{game.RoundManager.CurrentCharacter.Name} did NOTHING.");
-}
 public class AttackCommand : ICommand
 {
     public void Run(Game game)
@@ -21,11 +11,5 @@ public class AttackCommand : ICommand
         Console.WriteLine($"{current.Name} dealt {damage} damage to {enemyTarget.Name}.");
         enemyTarget.Health -= damage;
     }
-}
-
-internal enum Action
-{
-    Skip,
-    Attack
 }
 

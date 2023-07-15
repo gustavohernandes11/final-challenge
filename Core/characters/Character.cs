@@ -3,21 +3,13 @@ namespace EndGame;
 internal abstract class Character
 {
     private int health;
-
+    internal List<Item> Gear { get; set; } = new List<Item>();
     internal string Name { get; set; }
     internal abstract Attack Attack { get; }
     internal int Health
     {
-        get { return health; }
-        set
-        {
-            if (value < 0)
-                health = 0;
-            else if (value > MaxHealth)
-                health = MaxHealth;
-            else
-                health = value;
-        }
+        get => health;
+        set => health = Math.Clamp(value, 0, MaxHealth);
     }
     internal int MaxHealth { get; set; }
 
