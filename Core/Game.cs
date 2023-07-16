@@ -50,10 +50,10 @@ public class Game
                 command = new AttackCommand();
                 break;
             case Action.AttackWithDagger:
-                command = new AttackWithDaggerCommand();
-                break;
             case Action.AttackWithSword:
-                command = new AttackWithSwordCommand();
+            case Action.AttackWithBow:
+            case Action.AttackWithEquippedGear:
+                command = new AttackWithEquippedGearCommand();
                 break;
             case Action.EquipDagger:
                 command = new EquipDaggerCommand();

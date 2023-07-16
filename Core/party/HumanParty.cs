@@ -5,7 +5,7 @@ namespace EndGame
 {
     internal class HumanParty : Party
     {
-        public HumanParty(List<Character> characters, Player player, List<Item> inventory)
+        public HumanParty(List<Character> characters, Player player, List<IItem> inventory)
             : base(characters, player, inventory) { }
 
         internal string GetStringOptions(List<Action> availableActions)
@@ -24,20 +24,28 @@ namespace EndGame
         {
             List<Action> availableActions = new List<Action>(Actions);
 
-            if (Inventory.Contains(Item.HealthPotion) || current.Health < current.MaxHealth / 2)
+            if (Inventory.Any(item => item is HealthPotion) && current.Health < (current.MaxHealth / 2))
                 availableActions.Add(Action.UseHealthPotion);
 
-            if (Inventory.Contains(Item.Sword))
+            if (current is VinFletcher)
+                availableActions.Add(Action.AttackWithBow);
+
+            if (Inventory.Any(item => item is Sword)
+                && current is not VinFletcher
+                && current is not TheUncodedOne)
                 availableActions.Add(Action.EquipSword);
 
-            if (Inventory.Contains(Item.Dagger))
+            if (Inventory.Any(item => item is Dagger)
+                && current is not VinFletcher
+                && current is not TheUncodedOne)
                 availableActions.Add(Action.EquipDagger);
 
-            if (current.Gear.Contains(Item.Dagger))
+            if (current.Gear is Dagger)
                 availableActions.Add(Action.AttackWithDagger);
 
-            if (current.Gear.Contains(Item.Sword))
+            if (current.Gear is Sword)
                 availableActions.Add(Action.AttackWithSword);
+
 
 
             while (true)

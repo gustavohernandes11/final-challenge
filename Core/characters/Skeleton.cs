@@ -13,8 +13,9 @@ internal class Skeleton : Character
 
     internal Skeleton(
         string name = "SKELETON",
-        int health = 5)
-            : base(name, health) { }
+        int health = 5,
+        IGear? defaultGear = null)
+            : base(name, health, defaultGear) { }
 
 }
 

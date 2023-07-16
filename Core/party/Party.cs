@@ -4,18 +4,16 @@ namespace EndGame
 {
     internal abstract class Party
     {
-        public List<Item> Inventory { get; }
+        public List<IItem> Inventory { get; }
         public List<Action> Actions = new() { Action.Skip, Action.Attack };
         public Player Player { get; }
         public List<Character> Characters { get; set; }
 
-        protected Party(List<Character> characters, Player player, List<Item> inventory)
+        protected Party(List<Character> characters, Player player, List<IItem> inventory)
         {
             Characters = characters;
             Player = player;
             Inventory = inventory;
-
-
         }
 
         public abstract Action GetAction(Character current);

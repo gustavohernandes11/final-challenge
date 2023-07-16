@@ -3,7 +3,7 @@ namespace EndGame;
 internal abstract class Character
 {
     private int health;
-    internal List<Item> Gear { get; set; } = new List<Item>();
+    internal virtual IGear? Gear { get; set; }
     internal string Name { get; set; }
     internal abstract Attack Attack { get; }
     internal int Health
@@ -13,16 +13,15 @@ internal abstract class Character
     }
     internal int MaxHealth { get; set; }
 
-    internal Character(string name, int maxHealth)
+    internal Character(string name, int maxHealth, IGear? defaultGear = null)
     {
         Name = name;
         MaxHealth = maxHealth;
         Health = maxHealth;
+        Gear = defaultGear;
     }
 
     internal string GetCharacterStatus() =>
-        $"{Name} ( {Health} / {MaxHealth} )";
+        $"{Name} ( {Health} / {MaxHealth} ) {(Gear is not null ? $"[{Gear.Name}]" : "")}";
 
 }
-
-internal record Attack(string Name, int Damage) { }

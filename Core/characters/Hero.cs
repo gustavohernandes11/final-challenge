@@ -9,7 +9,3 @@ internal class Hero : Character
         int health = 25)
             : base(name, health) { }
 }
-
-
-
-
