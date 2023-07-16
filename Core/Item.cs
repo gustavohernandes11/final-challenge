@@ -14,7 +14,8 @@ internal class HealthPotion : IConsumeble
     public string Name => "Healing Potion!";
     public void Use(Character character)
     {
-        int regenerated = 10 - (character.MaxHealth - character.Health);
+        int regenerated = Math.Clamp(10, 0, character.MaxHealth - character.Health);
+        character.Health += 10;
         Console.WriteLine($"{character.Name} used healing potion and regenerated {regenerated} health.");
     }
 

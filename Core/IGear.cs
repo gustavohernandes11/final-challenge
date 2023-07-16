@@ -24,7 +24,7 @@ public class VinsBow : IGear
         get
         {
             Random rnd = new();
-            if (rnd.Next(2) > 0)
+            if (rnd.NextDouble() > 0.5)
                 return new Attack("QUICK SHOT", 3);
             else
                 return new Attack("QUICK SHOT (MISSED)", 0);

@@ -24,7 +24,7 @@ public class GameGenerator
                         new HumanParty(new List<Character> { new Skeleton(), new Skeleton() }, Player.TheUncodedOneArmy, new List<IItem> { new Dagger(), new HealthPotion() }),
                         new HumanParty(new List<Character> { new TheUncodedOne() }, Player.TheUncodedOneArmy, new List<IItem> { new Dagger(), new HealthPotion() })
                     };
-                    Party humanHeroes = new HumanParty(new List<Character> { Game.CreateNewCharacter(), new VinFletcher() }, Player.TheTrueProgrammer, new List<IItem> { new Sword(), new HealthPotion() });
+                    Party humanHeroes = new HumanParty(new List<Character> { new VinFletcher(), Game.CreateNewCharacter() }, Player.TheTrueProgrammer, new List<IItem> { new Sword(), new HealthPotion() });
 
                     return new GameOptions(humanMonsters, humanHeroes);
 
@@ -35,7 +35,7 @@ public class GameGenerator
                         new ComputerParty(new List<Character> { new Skeleton(), new Skeleton() }, Player.TheUncodedOneArmy, new List<IItem> { new Dagger(), new HealthPotion() }),
                         new ComputerParty(new List<Character> { new TheUncodedOne() }, Player.TheUncodedOneArmy, new List<IItem> { new Dagger(), new HealthPotion() })
                     };
-                    Party computerHeroes = new HumanParty(new List<Character> { Game.CreateNewCharacter(), new VinFletcher() }, Player.TheTrueProgrammer, new List<IItem> { new Sword(), new HealthPotion() });
+                    Party computerHeroes = new HumanParty(new List<Character> { new VinFletcher(), Game.CreateNewCharacter() }, Player.TheTrueProgrammer, new List<IItem> { new Sword(), new HealthPotion() });
 
                     return new GameOptions(computerMonsters, computerHeroes);
 
@@ -46,7 +46,7 @@ public class GameGenerator
                         new ComputerParty(new List<Character> { new Skeleton(), new Skeleton() }, Player.TheUncodedOneArmy, new List<IItem> { new Dagger(), new HealthPotion() }),
                         new ComputerParty(new List<Character> { new TheUncodedOne() }, Player.TheUncodedOneArmy, new List<IItem> { new Dagger(), new HealthPotion() })
                     };
-                    Party computerVsComputerHeroes = new ComputerParty(new List<Character> { Game.CreateNewCharacter(), new VinFletcher() }, Player.TheTrueProgrammer, new List<IItem> { new Sword(), new HealthPotion() });
+                    Party computerVsComputerHeroes = new ComputerParty(new List<Character> { new VinFletcher(), Game.CreateNewCharacter() }, Player.TheTrueProgrammer, new List<IItem> { new Sword(), new HealthPotion() });
 
                     return new GameOptions(computerVsComputerMonsters, computerVsComputerHeroes);
 

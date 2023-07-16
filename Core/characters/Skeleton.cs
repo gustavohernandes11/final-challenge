@@ -7,7 +7,7 @@ internal class Skeleton : Character
         get
         {
             Random rnd = new();
-            return new Attack("BONE CRUNCH", rnd.Next(2));
+            return new Attack("BONE CRUNCH", rnd.Next(3));
         }
     }
 
